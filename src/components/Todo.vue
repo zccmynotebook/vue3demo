@@ -23,16 +23,12 @@
 </template>
 <script setup>
 import { nanoid } from 'nanoid'
-import {reactive,ref, computed,toRefs,watchEffect} from 'vue'
+import {reactive,ref, computed,toRefs,watch} from 'vue'
 let name=ref('')
 let list=reactive([])
-let finish=0// 
-let m=computed(()=>list.filter(v=>v.done))
-console.log(m)
-// watchEffect(()=>{
-//    let ll=list.filter(v=>v.done)
-//    finish=ll.length
-// })
+let finish=ref(0)// 
+watch(list,()=>finish.value=list.filter(v=>v.done).length) 
+ 
 function add({target:{value}}){
   list.push({id:nanoid(),name:value,done:false})
   console.log(list)
