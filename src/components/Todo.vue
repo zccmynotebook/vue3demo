@@ -16,9 +16,9 @@
          <input type="checkbox" @change="checkAll" :disabled="!list.length" :checked="isCheckAll"/> 
          已完成{{finish}}个 / 总共{{list.length}}个
       </label>
-         <!-- <button type="button" 
+         <button type="button" 
          class="btn btn-danger pull-right"
-         @click="deleteDone">清除已完成</button> -->
+         @click="deleteDone">清除已完成</button>
    </footer>
 </template>
 <script setup>
@@ -30,7 +30,7 @@ let finish=ref(0)
 let isCheckAll=ref(false)
 watch(list,()=>{
    finish.value=list.filter(v=>v.done).length
-   isCheckAll.value=finish.value===list.length
+   isCheckAll.value=list.length>0&&finish.value===list.length
 }) 
  
 function add(e){
@@ -44,15 +44,18 @@ function deleteItem(id){
   list.splice(i,1)
 }
 function changeStatus({target},id){
-  list.forEach(v => {
-     if(v.id===id) v.done=target.checked
-  });
+//   list.forEach(v => {
+//      if(v.id===id) v.done=target.checked
+//   });
+   let item=list.find(v=>v.id==id)
+   item.done=target.checked
 } 
  
 function deleteDone(){
    list.forEach((v,i) => {
      if(v.done) list.splice(i,1)
    });
+    
 }
 function checkAll({target:{checked}}){
    list.forEach((v,i) => {
